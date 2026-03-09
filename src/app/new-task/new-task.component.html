@@ -1,0 +1,99 @@
+<div
+  class="relative flex min-h-screen w-full max-w-md mx-auto flex-col bg-white/5 backdrop-blur-md border-x border-white/10">
+
+  <!-- CABECERA -->
+  <header
+    class="flex items-center p-4 pb-3 justify-between border-b border-white/10 sticky top-0 bg-black/30 backdrop-blur-md z-10">
+    <a routerLink="/" aria-label="Volver"
+      class="flex size-10 shrink-0 items-center justify-center rounded-xl text-white/60 hover:text-primary hover:bg-primary/10 transition-all">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </a>
+    <h1 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center text-white">
+      Nueva Tarea
+    </h1>
+    <div class="size-10"></div>
+  </header>
+
+  <!-- CUERPO -->
+  <main class="flex-1 flex flex-col px-5 py-6 overflow-y-auto">
+    <form [formGroup]="taskForm" (ngSubmit)="saveTask()" class="flex flex-col gap-5 flex-1">
+
+      <!-- TÍTULO -->
+      <div class="flex flex-col gap-1.5">
+        <label for="task-title" class="text-xs font-bold text-white/60 uppercase tracking-wider">
+          Título <span class="text-primary">*</span>
+        </label>
+        <input formControlName="title" id="task-title" type="text" placeholder="¿Qué necesitas hacer?" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-base
+                 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/30 transition-all
+                 placeholder:text-white/30" />
+      </div>
+
+      <!-- DESCRIPCIÓN -->
+      <div class="flex flex-col gap-1.5">
+        <label for="task-desc" class="text-xs font-bold text-white/60 uppercase tracking-wider">
+          Descripción
+        </label>
+        <textarea formControlName="description" id="task-desc" placeholder="Añade más detalles sobre esta tarea…"
+          rows="4" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm
+                 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/30 transition-all
+                 placeholder:text-white/30 resize-none leading-relaxed">
+        </textarea>
+      </div>
+
+      <!-- FECHA -->
+      <div class="flex flex-col gap-1.5">
+        <label for="task-date" class="text-xs font-bold text-white/60 uppercase tracking-wider flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">calendar_today</span> Fecha
+        </label>
+        <input formControlName="date" id="task-date" type="date" class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm
+                 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/30 transition-all
+                 [color-scheme:dark]" />
+      </div>
+
+      <!-- PRIORIDAD -->
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-bold text-white/60 uppercase tracking-wider flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">flag</span> Prioridad
+        </label>
+        <div class="grid grid-cols-3 gap-2">
+          @for (opt of [
+          { value: 'baja', label: 'Baja', icon: '🟢', cls: 'border-emerald-500/40 text-emerald-400
+          peer-checked:bg-emerald-500/20 peer-checked:border-emerald-400' },
+          { value: 'media', label: 'Media', icon: '🟡', cls: 'border-amber-500/40 text-amber-400
+          peer-checked:bg-amber-500/20 peer-checked:border-amber-400' },
+          { value: 'alta', label: 'Alta', icon: '🔴', cls: 'border-red-500/40 text-red-400 peer-checked:bg-red-500/20
+          peer-checked:border-red-400' }
+          ]; track opt.value) {
+          <label class="relative cursor-pointer">
+            <input type="radio" formControlName="priority" [value]="opt.value" class="peer sr-only" />
+            <div class="border rounded-xl py-3 text-center text-sm font-semibold transition-all bg-black/20
+                          peer-checked:shadow-lg {{ opt.cls }}">
+              <span class="text-base block mb-0.5">{{ opt.icon }}</span>
+              <span>{{ opt.label }}</span>
+            </div>
+          </label>
+          }
+        </div>
+      </div>
+
+      <!-- ESPACIO FLEXIBLE -->
+      <div class="flex-1 min-h-8"></div>
+
+      <!-- BOTONES -->
+      <div class="flex flex-col gap-3 pb-safe">
+        <button type="submit" [disabled]="taskForm.invalid" class="flex items-center justify-center gap-2 rounded-xl h-14 px-5 w-full font-bold text-base
+                 bg-gradient-to-r from-primary to-[#ff7a33] text-white shadow-lg shadow-primary/30
+                 hover:shadow-primary/50 hover:-translate-y-0.5 active:translate-y-0 transition-all
+                 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none">
+          <span class="material-symbols-outlined text-xl">save</span>
+          Guardar Tarea
+        </button>
+        <a routerLink="/" class="flex items-center justify-center rounded-xl h-12 px-5 w-full font-semibold text-sm
+                  bg-white/5 text-white/60 hover:bg-white/10 hover:text-white transition-all">
+          Cancelar
+        </a>
+      </div>
+
+    </form>
+  </main>
+</div>

@@ -1,0 +1,5 @@
+{
+  "name": "Gestor de Tareas",
+  "description": "Una aplicación para gestionar tareas pendientes y completadas.",
+  "requestFramePermissions": []
+}

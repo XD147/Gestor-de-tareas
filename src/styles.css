@@ -1,0 +1,53 @@
+/* ── Global styles ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ec5b13;
+  --color-background-light: #f8f6f6;
+  --color-background-dark: #221610;
+  --font-display: "Public Sans", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-display);
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(236,91,19,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(120,40,180,0.10) 0%, transparent 60%),
+    linear-gradient(135deg, #0b1021 0%, #1a0e2e 60%, #0e1a2e 100%);
+  color: #f8f6f6;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* ── Scrollbars ──────────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 6px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: rgba(255,255,255,0.15); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+/* ── Inputs de tipo date ─────────────────────────────────────── */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+/* ── Transiciones suaves para listas ────────────────────────── */
+.task-card {
+  animation: fadeInUp 0.25s ease both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Checkbox accent color ───────────────────────────────────── */
+input[type="checkbox"] {
+  accent-color: var(--color-primary);
+}

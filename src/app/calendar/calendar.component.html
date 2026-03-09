@@ -1,0 +1,132 @@
+<div class="flex flex-col gap-4">
+
+    <!-- ── Navegación de mes ──────────────────────────────────────── -->
+    <div class="flex items-center justify-between">
+        <button (click)="prevMonth()" class="size-9 flex items-center justify-center rounded-xl text-white/60
+             hover:text-white hover:bg-white/8 transition-all">
+            <span class="material-symbols-outlined text-xl">chevron_left</span>
+        </button>
+
+        <h2 class="text-lg font-bold text-white capitalize">{{ monthTitle() }}</h2>
+
+        <button (click)="nextMonth()" class="size-9 flex items-center justify-center rounded-xl text-white/60
+             hover:text-white hover:bg-white/8 transition-all">
+            <span class="material-symbols-outlined text-xl">chevron_right</span>
+        </button>
+    </div>
+
+    <!-- ── Encabezados semana ─────────────────────────────────────── -->
+    <div class="grid grid-cols-7 gap-1">
+        @for (d of weekDays; track d) {
+        <div class="text-center text-xs font-bold text-white/40 uppercase py-1">{{ d }}</div>
+        }
+    </div>
+
+    <!-- ── Grilla de días ─────────────────────────────────────────── -->
+    <div class="grid grid-cols-7 gap-1">
+        @for (day of calendarDays(); track day.dateKey) {
+        <button (click)="selectDay(day)" [disabled]="day.tasks.length === 0" class="cal-day relative flex flex-col items-center py-2 px-1 rounded-xl transition-all
+               min-h-[3.5rem] disabled:cursor-default group" [class]="getDayClass(day)">
+
+            <!-- Número -->
+            <span class="text-sm font-semibold leading-none" [class]="getDayNumberClass(day)">
+                {{ day.date.getDate() }}
+            </span>
+
+            <!-- Puntos de prioridad -->
+            @if (day.tasks.length > 0) {
+            <div class="flex items-center gap-[3px] mt-1.5 flex-wrap justify-center max-w-full px-0.5">
+                @for (task of day.tasks.slice(0, 3); track task.id) {
+                <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" [class]="getPriorityDot(task.priority)"></span>
+                }
+                @if (day.tasks.length > 3) {
+                <span class="text-[9px] text-white/50 leading-none">+{{ day.tasks.length - 3 }}</span>
+                }
+            </div>
+            }
+
+            <!-- Burbuja de contador (solo si no está seleccionado) -->
+            @if (day.tasks.length > 0 && isNotSelected(day)) {
+            <span class="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full text-[9px] font-bold
+                   flex items-center justify-center" [class]="getCountBadgeClass(day.tasks)">
+                {{ day.tasks.length }}
+            </span>
+            }
+
+        </button>
+        }
+    </div>
+
+    <!-- ── Panel de tareas del día seleccionado ───────────────────── -->
+    @if (selectedDay()) {
+    <div class="cal-panel mt-1 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+
+        <!-- Cabecera del panel -->
+        <div class="flex items-center justify-between px-4 py-3 border-b border-white/8
+                  bg-gradient-to-r from-primary/10 to-transparent">
+            <div>
+                <p class="text-xs font-bold text-primary uppercase tracking-wider">
+                    {{ selectedDayLabel() }}
+                </p>
+                <p class="text-base font-bold text-white">{{ selectedDayFull() }}</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span
+                    class="px-2 py-1 rounded-full text-xs font-bold bg-primary/15 text-primary border border-primary/25">
+                    {{ selectedTaskCount() }} tarea{{ selectedTaskCount() !== 1 ? 's' : '' }}
+                </span>
+                <button (click)="clearSelection()" class="size-8 flex items-center justify-center rounded-xl text-white/40
+                   hover:text-white hover:bg-white/8 transition-all">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Lista de tareas -->
+        <div class="divide-y divide-white/5">
+            @for (task of selectedTasks(); track task.id) {
+            <div class="flex items-start gap-3 px-4 py-3 hover:bg-white/4 transition-all"
+                [class.opacity-55]="task.completed">
+
+                <!-- Estado completado -->
+                <div class="mt-0.5 w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border-2"
+                    [class]="task.completed ? 'bg-emerald-500 border-emerald-500' : 'border-white/25'">
+                    @if (task.completed) {
+                    <span class="material-symbols-outlined text-xs text-white"
+                        style="font-variation-settings:'FILL' 1">check</span>
+                    }
+                </div>
+
+                <!-- Datos de la tarea -->
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold leading-snug"
+                        [class]="task.completed ? 'text-white/40 line-through' : 'text-white'">
+                        {{ task.title }}
+                    </p>
+                    @if (task.description) {
+                    <p class="text-xs text-white/40 mt-0.5 leading-relaxed">{{ task.description }}</p>
+                    }
+                </div>
+
+                <!-- Badge prioridad -->
+                <span class="text-[10px] px-2 py-0.5 rounded-full border font-bold flex-shrink-0"
+                    [class]="getPriorityBadge(task.priority)">
+                    {{ priorityLabel(task.priority) }}
+                </span>
+            </div>
+            }
+        </div>
+
+        <!-- Añadir tarea en este día -->
+        <div class="px-4 py-3 border-t border-white/5">
+            <button (click)="onAddTaskForDay(selectedDate())" class="w-full flex items-center justify-center gap-2 py-2 rounded-xl border border-dashed
+                 border-primary/30 text-primary/70 hover:text-primary hover:border-primary/60
+                 hover:bg-primary/5 transition-all text-sm font-semibold">
+                <span class="material-symbols-outlined text-base">add</span>
+                Añadir tarea para este día
+            </button>
+        </div>
+    </div>
+    }
+
+</div>

@@ -1,0 +1,106 @@
+/* ── Estilos del calendario ─────────────────────────────────── */
+
+/* Estados de los días */
+.cal-day.selected-day {
+    background: var(--color-primary);
+    color: white;
+    box-shadow: 0 4px 20px rgba(236, 91, 19, 0.35);
+}
+
+.cal-day.today-with-tasks {
+    background: rgba(236, 91, 19, 0.15);
+    border: 1px solid rgba(236, 91, 19, 0.4);
+    color: white;
+}
+
+.cal-day.today-with-tasks:hover {
+    background: rgba(236, 91, 19, 0.25);
+}
+
+.cal-day.today-day {
+    border: 1px solid rgba(236, 91, 19, 0.4);
+    color: white;
+}
+
+.cal-day.has-tasks-day {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.cal-day.has-tasks-day:hover {
+    background: rgba(255, 255, 255, 0.10);
+}
+
+.cal-day.empty-day {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.cal-day.empty-day:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Puntos de prioridad */
+.dot-baja {
+    background: #34d399;
+}
+
+.dot-media {
+    background: #fbbf24;
+}
+
+.dot-alta {
+    background: #f87171;
+}
+
+/* Badges de prioridad */
+.badge-baja {
+    color: #34d399;
+    background: rgba(52, 211, 153, 0.1);
+    border-color: rgba(52, 211, 153, 0.3);
+}
+
+.badge-media {
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.badge-alta {
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+    border-color: rgba(248, 113, 113, 0.3);
+}
+
+/* Badges de contador */
+.badge-count-alta {
+    background: #ef4444;
+    color: white;
+}
+
+.badge-count-media {
+    background: #f59e0b;
+    color: white;
+}
+
+.badge-count-baja {
+    background: #10b981;
+    color: white;
+}
+
+/* Animación del panel */
+.cal-panel {
+    animation: slideDown 0.2s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
